@@ -20,7 +20,7 @@ if sys.version_info < python_min_version:
     sys.exit(-1)
 
 setup(
-    name="kore-pytorch",
+    name="kore_pytorch",
     version="0.1",
     author_email="e.a.koryukin@gmail.com",
     description= "Custom layers for PyTorch library.",
