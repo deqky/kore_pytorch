@@ -1,4 +1,4 @@
-from .layers import Advanced_HSV
-from .layers import Saturation_Layer
+from .layers import AdvancedHSV
+from .layers import SaturationLayer
 from .models import CNet
 from .models import UNet
