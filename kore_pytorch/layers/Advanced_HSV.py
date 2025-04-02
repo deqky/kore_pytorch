@@ -53,4 +53,27 @@ class AdvancedHSV(nn.Module):
         output, gray_c = self.make_ahsv(x)
         x = self.to_rgb_convert(output, gray_c)
         return x
- 
+
+
+if __name__ == "__main__":
+    import torchvision
+    import matplotlib.pyplot as plt
+    
+    model = AdvancedHSV()
+    image = torchvision.io.decode_image("kore_pytorch/layers/image13.png", mode = "RGB")
+    image = torch.stack((image, image), dim=0)
+    image = image.type(torch.float32) / 255.0
+    y = model(image)
+
+    plt.figure(figsize=(10,10))
+    plt.subplot(1, 2, 1)
+    plt.imshow((image * 255)[0].byte().numpy().transpose(1, 2, 0))
+    plt.title("original image")
+    plt.axis('off')
+
+    plt.subplot(1, 2, 2)
+    plt.imshow((y * 255)[0].byte().numpy().transpose(1, 2, 0))
+    plt.title("HSV mask")
+    plt.axis('off')
+    plt.tight_layout()
+    plt.show()

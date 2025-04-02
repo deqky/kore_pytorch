@@ -4,7 +4,7 @@ import torch
 from torch import nn
 
 class UNet(nn.Module):
-    def __init__(self, num_classes, **kwargs):
+    def __init__(self, num_classes, *args, **kwargs):
         super().__init__()
         self.name = 'UNet'
         
@@ -16,7 +16,7 @@ class UNet(nn.Module):
 
         self.classifier = nn.Conv2d(64, num_classes, kernel_size = 1)
     
-    def double_conv(self, in_channels, out_channels):
+    def double_conv(self, in_channels: int, out_channels: int) -> nn.Sequential:
         return nn.Sequential(
             nn.Conv2d(in_channels, out_channels, kernel_size = 3, padding = 1),
             nn.ReLU(inplace = True),
@@ -24,7 +24,7 @@ class UNet(nn.Module):
             nn.ReLU(inplace = True)
         )
         
-    def forward(self, x):
+    def forward(self, x: torch.Tensor) -> OrderedDict:
         result = OrderedDict()
         upconvs = []
         for i in self.up_convs:
@@ -41,3 +41,12 @@ class UNet(nn.Module):
         
         result["out"] = self.classifier(x)
         return result
+
+
+if __name__ == "__main__":
+
+    input_tensor = torch.randint(0, 255, (1, 3, 256, 256)).type(torch.float32)
+
+    model = UNet(num_classes=6)
+    y = model(input_tensor)['out']
+    print(y.shape)
