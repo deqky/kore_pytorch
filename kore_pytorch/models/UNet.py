@@ -4,11 +4,11 @@ import torch
 from torch import nn
 
 class UNet(nn.Module):
-    def __init__(self, num_classes, *args, **kwargs):
+    def __init__(self, num_classes, in_channels = 3, *args, **kwargs):
         super().__init__()
         self.name = 'UNet'
         
-        self.up_convs = nn.ModuleList([self.double_conv(3, 64)] + [self.double_conv(2 ** (i-1), 2**(i)) for i in range(7, 11)])
+        self.up_convs = nn.ModuleList([self.double_conv(in_channels, 64)] + [self.double_conv(2 ** (i-1), 2**(i)) for i in range(7, 11)])
         self.down_convs = nn.ModuleList([self.double_conv(2 ** (i + 1), 2**(i)) for i in range(9, 5, -1)])
         self.upsample = nn.ModuleList([nn.ConvTranspose2d(2 ** (i + 1), 2**(i), kernel_size=2, stride=2) for i in range(9, 5, -1)])
 

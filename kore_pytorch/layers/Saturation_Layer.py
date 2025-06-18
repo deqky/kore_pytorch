@@ -11,6 +11,10 @@ class SaturationLayer(nn.Module):
         self.chroma_mode = chroma_mode
         self.return_mode = return_mode
         self.name += f" Chroma mode {chroma_mode} Return mode {return_mode}"
+    
+    @property
+    def out_channels(self):
+        return 2 if self.return_mode == "catmax" else 1
         
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         max_channel, _ = torch.max(x, dim = 1, keepdim = True)
